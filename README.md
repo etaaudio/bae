@@ -14,7 +14,7 @@ One folder runs in Safari, Chrome and Firefox. Version 3.1.
 | Codec readout | Yes | Yes |
 | Speed 0.25x to 3x, with or without pitch correction | Yes | Yes |
 | Audio output device picker | Where the browser allows | Where the browser allows |
-| Padded bits: gain above 0 dB, up to +30 dB (experimental) | Yes | Untested |
+| Padded bits: gain above 0 dB, up to +20 dB (experimental) | Yes | Untested |
 | Crossfeed for headphones (experimental) | Yes | Untested |
 | B-Mode: bass shelf, +12 dB at 10, 20 or 40 Hz (experimental) | Yes | Untested |
 | Clip guard: a peak limiter, or a plain cap on the gain, after padded bits and B-Mode (experimental) | Yes | Untested |

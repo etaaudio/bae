@@ -421,7 +421,7 @@ function showPad() {
 
 async function setPad(value) {
   if (settings.unity) return; // Purist adds no gain
-  const db = Math.round(Math.min(30, Math.max(0, value)));
+  const db = Math.round(Math.min(20, Math.max(0, value)));
   if (!isFinite(db) || db === padDb) return;
   padDb = db;
   showPad();
@@ -429,22 +429,6 @@ async function setPad(value) {
 }
 
 padRange.addEventListener('input', () => setPad(parseFloat(padRange.value)));
-
-// Scroll over the readout or the slider: up adds 1 dB, down takes 1 dB off.
-let padTravel = 0;
-function onPadWheel(event) {
-  event.preventDefault();
-  const delta = event.deltaMode === 1 ? event.deltaY * 40 : event.deltaY;
-  if (delta * padTravel < 0) padTravel = 0;
-  padTravel += delta;
-  const notches = Math.trunc(padTravel / 40);
-  if (!notches) return;
-  padTravel -= notches * 40;
-  setPad(padDb - notches);
-}
-for (const zone of [el('padZone'), padRange]) {
-  zone.addEventListener('wheel', onPadWheel, { passive: false });
-}
 
 // Crossfeed, for headphones.
 const feedSelect = el('crossfeed');

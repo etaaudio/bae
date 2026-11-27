@@ -585,7 +585,7 @@
   // That reroutes the audio, so nothing is set up until one of them is asked
   // for, and once set up it lasts until the page reloads. Padded bits is never
   // saved: every page load starts at 0 dB. Crossfeed is an ordinary setting.
-  const PAD_MAX_DB = 30;
+  const PAD_MAX_DB = 20;
   const FEED_CHOICES = ['light', 'medium', 'strong'];
   // How far below the direct sound the crossfed sound sits at low frequencies.
   const FEED_DB = { light: 9.5, medium: 6, strong: 4.5 };
