@@ -343,13 +343,13 @@
   <section data-group="experimental">
     <details>
       <summary><h2>Experimental</h2><span class="peek" id="peek-experimental"></span></summary>
-    <div class="speed" id="padZone" title="Scroll to change the padded bits">
+    <div class="speed" id="padZone">
       <p class="big" id="padNow">0 dB</p>
       <span class="hint">padded bits</span>
     </div>
-    <input type="range" id="pad" min="0" max="30" step="1" value="0" aria-label="Padded bits: gain above 0 dB">
+    <input type="range" id="pad" min="0" max="20" step="1" value="0" aria-label="Padded bits: gain above 0 dB">
     <p class="line warn" id="bits" hidden>⚠ May crush your bits</p>
-    <p class="line warn">⚠ Pushes the level past 0 dB, up to +30 dB. With clip guard off it will clip. Either way it can damage speakers, headphones and hearing. Raise it slowly.</p>
+    <p class="line warn">⚠ Pushes the level past 0 dB, up to +20 dB. With clip guard off it will clip. Either way it can damage speakers, headphones and hearing. Raise it slowly.</p>
     <p class="line" id="padNote"></p>
     <p class="line help">Not saved: it returns to 0 dB whenever the page reloads.</p>
     <label class="pick"><span>Crossfeed</span>

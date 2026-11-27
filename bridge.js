@@ -161,7 +161,7 @@
     if (message.type === 'yta-pad') {
       // Experimental gain above 0 dB. Deliberately not saved anywhere: it
       // lives on this page only and is gone when the page reloads.
-      const db = Math.min(30, Math.max(0, Number(message.db) || 0));
+      const db = Math.min(20, Math.max(0, Number(message.db) || 0));
       const html = document.documentElement;
       if (html) html.setAttribute('data-yta-pad', String(db));
       document.dispatchEvent(new Event('yta-settings'));
