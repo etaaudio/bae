@@ -1,19 +1,26 @@
-# Push a tag like v3.1 and this builds bae.zip and attaches it to a GitHub Release.
-# ponytail: one job, no build tool; the zip is just the extension files.
+# Every PR builds the Chrome, Firefox and Safari packages so you can download and test them.
+# Pushing a tag like v3.1 also checks it matches the manifest and publishes them as a Release.
 name: release
 on:
   push:
     tags: ['v*']
+  pull_request:
 permissions:
   contents: write
 jobs:
-  zip:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: macos-latest   # Safari builds need Xcode
     steps:
       - uses: actions/checkout@v4
       - name: Check tag matches manifest version
+        if: startsWith(github.ref, 'refs/tags/')
         run: test "v$(jq -r .version manifest.json)" = "$GITHUB_REF_NAME"
-      - run: zip -r -X bae.zip manifest.json background.js bridge.js page.js popup.html popup.js icons LICENSE PRIVACY.md README.md
-      - run: gh release create "$GITHUB_REF_NAME" bae.zip --generate-notes
+      - run: ./build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bae-packages
+          path: dist/*.zip
+      - if: startsWith(github.ref, 'refs/tags/')
+        run: gh release create "$GITHUB_REF_NAME" dist/*.zip --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
