@@ -19,7 +19,7 @@ pack firefox 'del(.background.service_worker, .minimum_chrome_version)'
 if xcrun --find safari-web-extension-converter >/dev/null 2>&1; then
   pack safari '.'
   xcrun safari-web-extension-converter dist/safari --project-location dist/xcode \
-    --app-name BAE --bundle-identifier com.etaaudio.bae --macos-only --no-open --no-prompt --force
+    --app-name BAE --bundle-identifier com.etaaudio.BAE --macos-only --no-open --no-prompt --force
   xcodebuild -quiet -project dist/xcode/BAE/BAE.xcodeproj -scheme BAE -configuration Release \
     -derivedDataPath dist/derived CODE_SIGNING_ALLOWED=NO build
   rm dist/bae-safari.zip
