@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BAE",
-  "version": "3.1",
+  "version": "3.2",
   "description": "B-audio Enhancer. Purist playback, codec choice, speed and output control for web media players.",
   "permissions": [
     "storage"
