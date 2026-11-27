@@ -1,7 +1,7 @@
 # BAE
 
 B-audio Enhancer. A browser extension for people who care how YouTube and Spotify's web player sound.
-One folder runs in Safari, Chrome and Firefox. Version 3.0.
+One folder runs in Safari, Chrome and Firefox. Version 3.1.
 
 ## What it does
 
