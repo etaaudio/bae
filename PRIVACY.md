@@ -11,8 +11,9 @@ browsing data.
 
 ## What BAE stores
 
-Your own settings (codec choice, playback speed, pitch correction, output device and
-display options) are saved in your browser's local extension storage so they persist
+Your own settings (codec choice, Purist and normalization options, playback speed,
+pitch correction, crossfeed, B-Mode, clip guard, output device and display options) are saved in your
+browser's local extension storage so they persist
 between sessions. They stay on your device. Removing the extension removes them.
 
 ## Network requests
@@ -22,9 +23,10 @@ code.
 
 ## Sites it runs on
 
-BAE runs only on youtube.com, youtube-nocookie.com and open.spotify.com. On those pages
-it reads which audio and video formats the media player uses and adjusts the player's
-volume, playback speed and audio output device. It does not read any other page content.
+BAE runs only on the few media sites named in its permissions, which your browser shows
+before you install it. On those pages it reads which audio and video formats the player
+uses and adjusts its volume, speed, audio processing and output device. It does not read
+any other page content.
 
 ## Microphone prompt
 
