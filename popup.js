@@ -780,7 +780,7 @@ function blank(message, tone) {
 function render(reply) {
   if (!reply) {
     if (Date.now() < reloadingUntil) blank('Reloading the tab...');
-    else blank("Can't reach a player in this tab. Open YouTube or Spotify's web player, allow this extension on that site if the browser asks, then reload the page.", 'bad');
+    else blank("Can't reach a player in this tab. Allow this extension on this site if the browser asks, then reload the page.", 'bad');
     return;
   }
   let status = null;

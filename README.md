@@ -18,6 +18,9 @@ One folder runs in Safari, Chrome and Firefox. Version 3.2.
 | Crossfeed for headphones (experimental) | Yes | Untested |
 | B-Mode: bass shelf, +12 dB at 10, 20 or 40 Hz (experimental) | Yes | Untested |
 | Clip guard: a peak limiter, or a plain cap on the gain, after padded bits and B-Mode (experimental) | Yes | Untested |
+
+On every other site, the features marked Yes for Spotify work the same way on any audio or video
+the page plays. Codec choice stays a YouTube setting.
 | Audio path: Tap, Stream capture or Rebuild, for browsers that don't pass audio to extensions (experimental) | Yes, AAC | Untested |
 | Buffer readout, and a toolbar icon that turns green for Purist and blue while an effect is on | Yes | Yes |
 
