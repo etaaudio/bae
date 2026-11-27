@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BAE",
-  "version": "1.0",
+  "version": "3.0",
   "description": "B-audio Enhancer. Purist playback, codec choice, speed and output control for YouTube and Spotify's web player.",
   "permissions": [
     "storage"
