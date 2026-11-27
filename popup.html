@@ -232,6 +232,23 @@
     <p class="line help">Plays at full digital level with speed, pitch, attenuation and padded bits all switched off, whatever they are set to. Codec choice, output and the on-player display still work.</p>
   </section>
 
+  <section data-group="codec">
+    <details>
+      <summary><h2>Codec</h2><span class="peek" id="peek-codec"></span></summary>
+    <dl class="facts">
+      <div><dt>Audio</dt><dd id="audio">…</dd></div>
+      <div><dt>Video</dt><dd id="video">…</dd></div>
+    </dl>
+    <p class="line" id="codec"></p>
+    <label class="pick"><span>Audio codec</span>
+      <select id="audioCodec"><option value="auto">Auto</option></select>
+    </label>
+    <label class="pick"><span>Video codec</span>
+      <select id="videoCodec"><option value="auto">Auto</option></select>
+    </label>
+    </details>
+  </section>
+
   <section data-group="speed">
     <details>
       <summary><h2>Speed</h2><span class="peek" id="peek-speed"></span></summary>
@@ -277,32 +294,6 @@
       <span>Bypass attenuation <small class="sub">YouTube's volume normalization</small></span>
       <span class="track" aria-hidden="true"></span>
     </button>
-    </details>
-  </section>
-
-  <section data-group="codec">
-    <details>
-      <summary><h2>Codec</h2><span class="peek" id="peek-codec"></span></summary>
-    <dl class="facts">
-      <div><dt>Audio</dt><dd id="audio">…</dd></div>
-      <div><dt>Video</dt><dd id="video">…</dd></div>
-    </dl>
-    <p class="line" id="codec"></p>
-    <label class="pick"><span>Audio codec</span>
-      <select id="audioCodec">
-        <option value="auto">Auto</option>
-        <option value="aac">AAC</option>
-        <option value="opus">Opus</option>
-      </select>
-    </label>
-    <label class="pick"><span>Video codec</span>
-      <select id="videoCodec">
-        <option value="auto">Auto</option>
-        <option value="h264">H.264</option>
-        <option value="vp9">VP9</option>
-        <option value="av1">AV1</option>
-      </select>
-    </label>
     </details>
   </section>
 

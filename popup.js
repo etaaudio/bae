@@ -92,15 +92,55 @@ function showFact(id, info) {
   }
 }
 
-// The codec pickers. 'auto' leaves the choice to YouTube.
-const FAMILY = { aac: /^mp4a/i, opus: /opus/i, h264: /^avc[13]/i, vp9: /^vp0?9/i, av1: /^av01/i };
-const LABEL = { aac: 'AAC', opus: 'Opus', h264: 'H.264', vp9: 'VP9', av1: 'AV1' };
+// The codec menus list what the page found: codecs the site offered first,
+// then the others this browser plays. Rebuilt only when that list changes.
+function fillPicker(select, list, chosen) {
+  const key = JSON.stringify([list, chosen]);
+  if (select.dataset.key === key) return;
+  select.dataset.key = key;
+  select.textContent = '';
+  select.append(new Option('Auto', 'auto'));
+  const group = (label, items, disabled) => {
+    if (!items.length) return;
+    const box = document.createElement('optgroup');
+    box.label = label;
+    for (const c of items) {
+      const option = new Option(c.name, c.id);
+      option.disabled = !!disabled;
+      box.append(option);
+    }
+    select.append(box);
+  };
+  group('Offered by this site', list.filter(c => c.site && c.browser));
+  group('This browser also plays', list.filter(c => !c.site && c.browser));
+  group("Offered, but this browser can't play", list.filter(c => c.site && !c.browser), true);
+  if (chosen !== 'auto' && !list.some(c => c.id === chosen)) select.append(new Option(chosen.toUpperCase() + ' (not found)', chosen));
+  select.value = chosen;
+}
+
+// "FLAC · 24-bit · 96 kHz · 2116 kbps"
+const audioLine = s => [s.audioName, s.audioBits ? s.audioBits + '-bit' : '',
+  s.audioRate ? s.audioRate / 1000 + ' kHz' : '', s.audioKbps ? s.audioKbps + ' kbps' : ''].filter(Boolean).join(' · ');
+
+// One sentence about a forced codec, or '' when there is nothing to say.
+function forcedNote(kind, chosen, status) {
+  if (chosen === 'auto') return '';
+  const list = (status.choices && status.choices[kind]) || [];
+  const found = list.find(c => c.id === chosen);
+  const name = found ? found.name : chosen.toUpperCase();
+  const now = kind === 'audio' ? status.audioId : status.videoId;
+  if (found && !found.browser) return "This browser can't play " + name + ', so ' + kind + ' stays on Auto.';
+  if (now === chosen) return '';
+  if (!found || !found.site) return 'This site hasn\'t offered ' + name + ' yet. If nothing plays, set ' + kind + ' back to Auto.';
+  return now ? 'Reload the tab to switch ' + kind + ' to ' + name + '.' : '';
+}
+
 const pickers = { audioCodec: el('audioCodec'), videoCodec: el('videoCodec') };
+let lastChoices = { audio: [], video: [] };
 
 function showPickers() {
-  for (const [key, select] of Object.entries(pickers)) {
-    select.value = LABEL[settings[key]] ? settings[key] : 'auto';
-  }
+  fillPicker(pickers.audioCodec, lastChoices.audio, settings.audioCodec);
+  fillPicker(pickers.videoCodec, lastChoices.video, settings.videoCodec);
 }
 
 for (const [key, select] of Object.entries(pickers)) {
@@ -119,33 +159,19 @@ for (const [key, select] of Object.entries(pickers)) {
   });
 }
 
-// One sentence of feedback for a picker that isn't on Auto.
-function verdictFor(kind, choice, ok, playing) {
-  const name = LABEL[choice];
-  if (!name) return null;
-  if (!ok) return { text: "This browser can't play " + name + ', so ' + kind.toLowerCase() + ' stays on Auto.', bad: true };
-  if (!playing) return null;
-  if (FAMILY[choice].test(playing.id)) return { text: kind + ' is ' + name + ', as chosen.', bad: false };
-  return { text: kind + ' is still ' + playing.name + '. Reload this tab to switch to ' + name + '.', bad: true };
-}
-
 function showCodec(status) {
-  const audio = codec(status.audio);
+  const audio = codec(status.audio) || (status.audioName ? { name: status.audioName, id: status.audioName } : null);
   const video = codec(status.video);
-  showFact('audio', audio);
-  const depth = [status.audioBits ? status.audioBits + '-bit' : '', status.audioRate ? status.audioRate / 1000 + ' kHz' : ''].filter(Boolean).join(' ');
-  if (audio && depth) el('audio').append(' · ' + depth);
+  showFact('audio', audio && { ...audio, name: audioLine({ ...status, audioName: audio.name }) });
   showFact('video', video);
+  if (status.choices) lastChoices = status.choices;
+  showPickers();
   if (!audio && !video) {
-    say('codec', 'Play a video, or reload the tab, to detect the codec.');
+    say('codec', 'Play something, or reload the tab, to detect the codec.');
     return;
   }
-  const notes = [
-    verdictFor('Audio', settings.audioCodec, status.audioOk !== false, audio),
-    verdictFor('Video', settings.videoCodec, status.videoOk !== false, video)
-  ].filter(Boolean);
-  say('codec', notes.map(note => note.text).join(' '),
-    notes.some(note => note.bad) ? 'bad' : notes.length ? 'good' : '');
+  const notes = [forcedNote('audio', settings.audioCodec, status), forcedNote('video', settings.videoCodec, status)].filter(Boolean);
+  say('codec', notes.join(' '), notes.length ? 'bad' : '');
 }
 
 /* ----------------------------- attenuation ----------------------------- */

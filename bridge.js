@@ -39,8 +39,8 @@
     try { localStorage.setItem(name, value); } catch (_) { /* storage blocked in this frame */ }
   };
   const CHOICES = [
-    ['audioCodec', 'yta-audio', ['aac', 'opus']],
-    ['videoCodec', 'yta-video', ['h264', 'vp9', 'av1']],
+    ['audioCodec', 'yta-audio', /^[a-z0-9.-]{1,16}$/], // any codec family id
+    ['videoCodec', 'yta-video', /^[a-z0-9.-]{1,16}$/],
     ['crossfeed', 'yta-xfeed', ['light', 'medium', 'strong']],
     ['beef', 'yta-beef', ['10', '20', '40']],
     ['audioPath', 'yta-path', ['capture', 'rebuild']],
@@ -53,7 +53,8 @@
     const speed = parseFloat(settings.speed);
     publish('yta-speed', String(Number.isFinite(speed) && speed >= 0.25 && speed <= 4 ? speed : 1));
     for (const [key, name, allowed] of CHOICES) {
-      publish(name, allowed.includes(settings[key]) ? settings[key] : 'auto');
+      const ok = Array.isArray(allowed) ? allowed.includes(settings[key]) : typeof settings[key] === 'string' && allowed.test(settings[key]);
+      publish(name, ok ? settings[key] : 'auto');
     }
     publish('yta-output', typeof settings.outputId === 'string' ? settings.outputId : '');
     document.dispatchEvent(new Event('yta-settings'));
