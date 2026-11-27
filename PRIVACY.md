@@ -23,8 +23,8 @@ code.
 
 ## Sites it runs on
 
-BAE runs only on the few media sites named in its permissions, which your browser shows
-before you install it. On those pages it reads which audio and video formats the player
+BAE runs on every website, so its settings work in any tab that plays audio or video. On
+each page it reads which audio and video formats the player
 uses and adjusts its volume, speed, audio processing and output device. It does not read
 any other page content.
 
