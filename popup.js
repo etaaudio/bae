@@ -62,7 +62,7 @@ function say(id, text, tone) {
 
 const CODEC_NAMES = [
   ['mp4a.40.29', 'HE-AAC v2'], ['mp4a.40.5', 'HE-AAC'], ['mp4a.40.2', 'AAC-LC'], ['mp4a', 'AAC'],
-  ['opus', 'Opus'], ['vorbis', 'Vorbis'], ['ec-3', 'E-AC-3'], ['ac-3', 'AC-3'], ['flac', 'FLAC'],
+  ['opus', 'Opus'], ['vorbis', 'Vorbis'], ['ec-3', 'E-AC-3'], ['ac-3', 'AC-3'], ['flac', 'FLAC'], ['alac', 'ALAC'],
   ['av01', 'AV1'], ['vp09', 'VP9'], ['vp9', 'VP9'], ['vp8', 'VP8'],
   ['avc1', 'H.264'], ['avc3', 'H.264'], ['hev1', 'HEVC'], ['hvc1', 'HEVC']
 ];
@@ -133,6 +133,8 @@ function showCodec(status) {
   const audio = codec(status.audio);
   const video = codec(status.video);
   showFact('audio', audio);
+  const depth = [status.audioBits ? status.audioBits + '-bit' : '', status.audioRate ? status.audioRate / 1000 + ' kHz' : ''].filter(Boolean).join(' ');
+  if (audio && depth) el('audio').append(' · ' + depth);
   showFact('video', video);
   if (!audio && !video) {
     say('codec', 'Play a video, or reload the tab, to detect the codec.');
