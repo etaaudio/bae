@@ -85,7 +85,7 @@ function showFact(id, info) {
     return;
   }
   cell.append(info.name);
-  if (info.id !== info.name) {
+  if (info.id && info.id !== info.name) {
     const raw = document.createElement('small');
     raw.textContent = ' ' + info.id;
     cell.append(raw);
@@ -133,8 +133,16 @@ function fillPicker(select, kind, choices, chosen) {
   select.value = chosen;
 }
 
+// Where the popup's figures came from, in one sentence.
+const SOURCE = {
+  stream: 'Read from the stream itself.',
+  hls: 'Read from the stream\'s playlist and header.',
+  file: 'Read from the audio file.',
+  hidden: 'This player streams out of the extension\'s sight: the bit rate is measured, the codec is a best guess.'
+};
+
 // "FLAC · 24-bit · 96 kHz · 2116 kbps"
-const audioLine = s => [s.audioName, s.audioBits ? s.audioBits + '-bit' : '',
+const audioLine = s => [s.audioName && s.audioName + (s.likely ? ' (likely)' : ''), s.audioBits ? s.audioBits + '-bit' : '',
   s.audioRate ? s.audioRate / 1000 + ' kHz' : '', s.audioKbps ? s.audioKbps + ' kbps' : ''].filter(Boolean).join(' · ');
 
 // One sentence about a forced codec, or '' when there is nothing to say.
@@ -175,7 +183,7 @@ for (const [key, select] of Object.entries(pickers)) {
 }
 
 function showCodec(status) {
-  const audio = codec(status.audio) || (status.audioName ? { name: status.audioName, id: status.audioName } : null);
+  const audio = codec(status.audio) || (status.audioName ? { name: status.audioName, id: '' } : null);
   const video = codec(status.video);
   showFact('audio', audio && { ...audio, name: audioLine({ ...status, audioName: audio.name }) });
   showFact('video', video);
@@ -186,7 +194,7 @@ function showCodec(status) {
     return;
   }
   const notes = [forcedNote('audio', settings.audioCodec, status), forcedNote('video', settings.videoCodec, status)].filter(Boolean);
-  say('codec', notes.join(' '), notes.length ? 'bad' : '');
+  say('codec', notes.length ? notes.join(' ') : SOURCE[status.how] || '', notes.length ? 'bad' : '');
 }
 
 /* ----------------------------- attenuation ----------------------------- */
