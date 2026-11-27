@@ -15,14 +15,17 @@ pack() { # pack <browser> <jq filter applied to manifest.json>
 pack chrome  'del(.background.scripts, .browser_specific_settings)'
 pack firefox 'del(.background.service_worker, .minimum_chrome_version)'
 
-# ponytail: unsigned build; sign it here once the Apple developer account is ready
+# ponytail: ad-hoc signed (runs with Safari's Allow Unsigned Extensions); use a real identity once the Apple developer account is ready
 if xcrun --find safari-web-extension-converter >/dev/null 2>&1; then
   pack safari '.'
   xcrun safari-web-extension-converter dist/safari --project-location dist/xcode \
     --app-name BAE --bundle-identifier com.etaaudio.BAE --macos-only --no-open --no-prompt --force
   xcodebuild -quiet -project dist/xcode/BAE/BAE.xcodeproj -scheme BAE -configuration Release \
-    -derivedDataPath dist/derived CODE_SIGNING_ALLOWED=NO build
+    -derivedDataPath dist/derived CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= build
+  app=dist/derived/Build/Products/Release/BAE.app
+  codesign --verify --deep --strict "$app"
+  codesign -d --entitlements - "$app/Contents/PlugIns/BAE Extension.appex" | grep -q app-sandbox
   rm dist/bae-safari.zip
-  ditto -c -k --keepParent dist/derived/Build/Products/Release/BAE.app dist/bae-safari.zip
+  ditto -c -k --keepParent "$app" dist/bae-safari.zip
 fi
 ls -l dist/*.zip
