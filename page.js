@@ -159,7 +159,7 @@
   const refusedCache = new Map();
 
   function refused(mime) {
-    if (SITE !== 'youtube' || typeof mime !== 'string') return false;
+    if (typeof mime !== 'string') return false;
     // With both choices on Auto (the default) nothing is ever refused.
     if (audioChoice() === 'auto' && settings.videoCodec === 'auto') return false;
     const cached = refusedCache.get(mime);

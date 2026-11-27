@@ -108,8 +108,8 @@ for (const [key, select] of Object.entries(pickers)) {
     settings[key] = select.value;
     try { await api.storage.local.set(settings); } catch (_) { /* keep going */ }
     const reply = await ask({ type: 'yta-apply', settings });
-    if (reply && site === 'youtube') {
-      // YouTube picks its formats when the page loads, so load it again.
+    if (reply) {
+      // Players pick their formats when the page loads, so load it again.
       reloadingUntil = Date.now() + 5000;
       try { await api.tabs.reload(tabId); } catch (_) { /* keep going */ }
       render(null);
@@ -134,12 +134,6 @@ function showCodec(status) {
   const video = codec(status.video);
   showFact('audio', audio);
   showFact('video', video);
-  const usable = site === 'youtube';
-  for (const select of Object.values(pickers)) select.disabled = !usable;
-  if (!usable) {
-    say('codec', 'Codec choice is a YouTube setting. This player picks its own format.');
-    return;
-  }
   if (!audio && !video) {
     say('codec', 'Play a video, or reload the tab, to detect the codec.');
     return;

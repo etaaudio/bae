@@ -20,7 +20,7 @@ One folder runs in Safari, Chrome and Firefox. Version 3.2.
 | Clip guard: a peak limiter, or a plain cap on the gain, after padded bits and B-Mode (experimental) | Yes | Untested |
 
 On every other site, the features marked Yes for Spotify work the same way on any audio or video
-the page plays. Codec choice stays a YouTube setting.
+the page plays. Codec choice works on any player that asks the browser which formats it can play.
 | Audio path: Tap, Stream capture or Rebuild, for browsers that don't pass audio to extensions (experimental) | Yes, AAC | Untested |
 | Buffer readout, and a toolbar icon that turns green for Purist and blue while an effect is on | Yes | Yes |
 
