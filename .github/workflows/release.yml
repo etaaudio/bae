@@ -1,0 +1,19 @@
+# Push a tag like v3.1 and this builds bae.zip and attaches it to a GitHub Release.
+# ponytail: one job, no build tool; the zip is just the extension files.
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check tag matches manifest version
+        run: test "v$(jq -r .version manifest.json)" = "$GITHUB_REF_NAME"
+      - run: zip -r -X bae.zip manifest.json background.js bridge.js page.js popup.html popup.js icons LICENSE PRIVACY.md README.md
+      - run: gh release create "$GITHUB_REF_NAME" bae.zip --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
